@@ -2,7 +2,7 @@
     <item android:drawable="@drawable/orbis_icon_background" />
     <item
         android:width="108dp"
-        android:height="58.96dp"
+        android:height="108dp"
         android:gravity="center"
         android:drawable="@drawable/orbis_logo" />
 </layer-list>

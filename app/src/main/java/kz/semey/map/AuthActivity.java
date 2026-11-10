@@ -44,7 +44,7 @@ public class AuthActivity extends Activity {
     brand.setContentDescription("Orbis");
     brand.setScaleType(ImageView.ScaleType.FIT_CENTER);
     brand.setAdjustViewBounds(true);
-    LinearLayout.LayoutParams brandSize = new LinearLayout.LayoutParams(d(240), d(131));
+    LinearLayout.LayoutParams brandSize = new LinearLayout.LayoutParams(d(120), d(120));
     brandSize.gravity = Gravity.CENTER_HORIZONTAL;
     outer.addView(brand, brandSize);
     FrameLayout hero = new FrameLayout(this);
