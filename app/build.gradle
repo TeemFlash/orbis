@@ -1,0 +1,21 @@
+plugins { id 'com.android.application'; id 'com.google.gms.google-services' }
+android {
+ namespace 'kz.semey.map'
+ compileSdk 34
+ defaultConfig {
+        testInstrumentationRunner "kz.semey.map.PhotoCodecInstrumentation"
+  applicationId 'kz.semey.map'
+  minSdk 26
+  targetSdk 34
+  versionCode 7
+  versionName '2.2'
+  buildConfigField 'boolean', 'FIREBASE_EMULATORS', project.hasProperty('firebaseEmulators') ? 'true' : 'false'
+ }
+ buildFeatures { buildConfig true }
+ compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+}
+dependencies { implementation 'org.maplibre.gl:android-sdk:11.11.0'
+ implementation platform('com.google.firebase:firebase-bom:33.16.0')
+ implementation 'com.google.firebase:firebase-auth'
+ implementation 'com.google.firebase:firebase-database'
+ testImplementation 'junit:junit:4.13.2' }

@@ -1,0 +1,22 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /messages/{messageId} {
+      function anonymous() {
+        return request.auth != null && request.auth.token.firebase.sign_in_provider == 'anonymous';
+      }
+      allow read: if anonymous();
+      allow create: if anonymous()
+        && request.resource.data.keys().hasAll(['id', 'text', 'authorId', 'timestamp'])
+        && request.resource.data.keys().hasOnly(['id', 'text', 'authorId', 'timestamp'])
+        && request.resource.data.id == messageId
+        && request.resource.data.authorId == request.auth.uid
+        && request.resource.data.text is string
+        && request.resource.data.text.size() > 0
+        && request.resource.data.text.size() <= 1000
+        && request.resource.data.text.matches('(?s).*[^\\s].*')
+        && request.resource.data.timestamp == request.time;
+      allow update, delete: if false;
+    }
+  }
+}

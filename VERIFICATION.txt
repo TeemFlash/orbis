@@ -1,0 +1,66 @@
+Current Orbis revision evidence: docs/orbis-evidence/checks.md.
+Earlier sections below are historical; the Sensors feature was removed by user request.
+
+2026-11-03 — Semey Map 2.2
+
+PASS: assembleDebug, assembleDebugAndroidTest, lintDebug.
+PASS: 9 pure Java validation checks (preceding Firebase implementation).
+PASS: 22 local Firebase emulator permission/realtime checks, including photo size,
+unauthenticated denial, sender spoofing and captionless attachments.
+PASS: physical Android device compression test: noisy 2200x1600 image <=100 KiB,
+<=960px; invalid and oversized data rejected.
+Cache regression: 1600x1600 JPEG initially exceeded thumbnail memory bound;
+fixed with bounded thumbnail decoding and explicit retry after cache eviction.
+PASS after fix: device regression asserts decoded thumbnail <=1 MiB.
+
+Physical device visual checks:
+- Blue/mint login, chat and Lucide icons rendered.
+- User signed in and sent a real photo with caption; it appeared in cloud chat.
+- Photo remained present after reinstall/relaunch.
+- Local Cobe globe rendered and final centered layout visually inspected.
+- Map, photo and chat code remained compiled after cleanup.
+- Promotional text, Semey places shortcut and joke scheduling removed.
+
+Not tested: two physical phones simultaneously, minimum-API device, screen reader,
+very large fonts, prolonged offline use, all possible image codecs.
+
+Final street-map toggle visual check could not finish because the phone locked again;
+map code compiles and the earlier map UI/location rendering was device-verified.
+
+
+2026-11-10 — Sensors + Profile integration
+PASS: :app:testDebugUnitTest (13 tests, 0 failures/errors).
+PASS: :app:assembleDebug, :app:assembleDebugAndroidTest, :app:lintDebug.
+Lint: 0 errors, 27 warnings (including existing/dependency/API/style warnings).
+PASS after final drawable change: :app:assembleDebug :app:lintDebug.
+PASS: original PhotoCodecInstrumentation on emulator: noisy large image <=100 KiB,
+<=960px, invalid/oversized data rejected; runner preserved.
+PASS emulator: light100→50→10→50→60→40 produces Light/Light/Dark/Dark/Light/Dark.
+PASS emulator: raw acceleration4,2,8 visible; opposite inputs move ball oppositely;
++/-20m/s² extremes keep ball within its viewport (pixel bounds recorded).
+PASS emulator: 10 enter/leave cycles each have one SensorMonitor connection active,
+zero paused, one on return. Home also leaves zero active app sensor connections.
+PASS emulator: rotations0/90/180/270 recreate responsive UI with one connection.
+PASS emulator: Auto sensor theme off persists and uses light system theme at10lux;
+restored auto theme on after the test.
+PASS emulator profile: selected test image, edited name/bio, first cover persisted
+as private JPEG; force-stop/relaunch retained fields and displayed the image.
+PASS emulator: picker cancellation + editor Cancel left stored cover SHA256 unchanged.
+PASS source/unit review: account-scoped preferences and editor epoch invalidation.
+PASS physical Samsung SM-S911B: live acceleration and light samples displayed, both
+Active; observed14.99lux with dark screen. Four tabs and Profile opened; existing
+signed-in Chats displayed two stored photos and Attach photo control.
+No new messages/photos were sent to cloud for this check. No Firebase config changed.
+
+Boundaries: emulator values are injected, not physical calibration evidence. User
+confirmation of deliberate physical tilt/light manipulation was requested but not
+received at report time. Real login-switch isolation, revoked picker URI, sustained
+low-memory/process-death, accessibility and large-font combinations were not exercised
+on device; corresponding source safeguards reviewed, validation/epoch/scope unit tested.
+Sensors missing/registration failure cases are unit-state/source checks, not unavailable
+physical hardware. Profile uses a chosen test screenshot on emulator as a picker fixture;
+it is not a supplied default photo or a claimed final profile identity.
+
+Astra architecture + read-only reviews; Luna source implementation/fix tracks;
+root integration, build and device QA. No Git repository/commit was created.
+APK SHA256: fd82a2a7cbf97175780077a3dbd6a5138db5365b0dde68fdcefce2259d1fecdf

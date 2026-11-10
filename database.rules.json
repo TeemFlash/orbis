@@ -1,0 +1,50 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "messages": {
+      ".read": "auth != null && auth.token.firebase.sign_in_provider != 'anonymous' && query.orderByChild == 'createdAt' && query.limitToLast != null && query.limitToLast <= 100",
+      ".indexOn": [
+        "createdAt"
+      ],
+      "$message": {
+        ".write": "auth != null && auth.token.firebase.sign_in_provider != 'anonymous' && !data.exists() && newData.exists() && newData.child('uid').val() == auth.uid",
+        ".validate": "newData.hasChildren(['uid', 'name', 'text', 'createdAt'])",
+        "uid": {
+          ".validate": "newData.isString() && newData.val() == auth.uid"
+        },
+        "name": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 40"
+        },
+        "text": {
+          ".validate": "newData.isString() && newData.val().length <= 1000 && ((newData.val().length > 0 && !newData.val().matches(/^[ \\t\\r\\n]*$/)) || newData.parent().child('photoId').exists())"
+        },
+        "createdAt": {
+          ".validate": "newData.isNumber() && newData.val() == now"
+        },
+        "$other": {
+          ".validate": false
+        },
+        "photoId": {
+          ".validate": "newData.isString() && newData.val() == $message"
+        }
+      }
+    },
+    "photos": {
+      "$photo": {
+        ".read": "auth != null && auth.token.firebase.sign_in_provider != 'anonymous'",
+        ".write": "auth != null && auth.token.firebase.sign_in_provider != 'anonymous' && !data.exists() && newData.exists() && newData.child('uid').val() == auth.uid",
+        ".validate": "newData.hasChildren(['uid', 'data'])",
+        "uid": {
+          ".validate": "newData.isString() && newData.val() == auth.uid"
+        },
+        "data": {
+          ".validate": "newData.isString() && newData.val().length <= 136536 && newData.val().beginsWith('/9j/') && newData.val().matches(/^[A-Za-z0-9+\\/=]+$/)"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    }
+  }
+}

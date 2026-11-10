@@ -1,0 +1,22 @@
+.gradle/
+**/build/
+local.properties
+.idea/workspace.xml
+
+# Local tools, generated output and private Firebase project configuration
+**/node_modules/
+outputs/
+.superpowers/
+.idea/
+.kotlin/
+**/google-services.json
+**/*.jks
+**/*.keystore
+**/*service-account*.json
+**/*serviceAccount*.json
+*.log
+.firebase/
+graphify-out/
+# Historical device captures may contain local account information
+/docs/sensors-evidence/
+/docs/livepulse-evidence/
